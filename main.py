@@ -19,7 +19,7 @@ service = Service(ChromeDriverManager().install())
 
 @app.route('/')
 def index():
-    return add_90_min_mc_server()
+    return "<h1>Automation App by Vishal Singh</h1>"
     
 @app.route('/start-minecraft-server', methods=['GET'])
 def start_server():
