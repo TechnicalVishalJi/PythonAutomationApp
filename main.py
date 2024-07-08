@@ -5,13 +5,17 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 import time
 import os
 import traceback
 
+
 app = Flask(__name__)
 pagespeed_url = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
 wordpress_url = "https://vishal.rf.gd"
+service = Service(ChromeDriverManager().install())
 
 @app.route('/')
 def index():
@@ -69,7 +73,7 @@ def add_90_min_minecraft_server():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-blink-features=AutomationControlled")
-    driver = webdriver.Chrome(options=options)  # Change to webdriver.Chrome
+    driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
 
     # Define your server URL and login details
     server_login_url = 'https://panel.gaming4free.net/auth/login'
@@ -119,7 +123,7 @@ def login_nightcafe():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-blink-features=AutomationControlled")
     #options.add_argument("--window-size=2600x1280")
-    driver = webdriver.Chrome(options=options)  # Change to webdriver.Chrome
+    driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
 
     # Define your login URL and credentials
     nc_url = "https://creator.nightcafe.studio/studio?view=password-login"
@@ -208,7 +212,7 @@ def start_minecraft_server():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-blink-features=AutomationControlled")
-    driver = webdriver.Chrome(options=options)  # Change to webdriver.Chrome
+    driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
 
     # Define your server URL and login details
     server_login_url = 'https://panel.gaming4free.net/auth/login'
@@ -295,7 +299,7 @@ def login_to_heliohost():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-blink-features=AutomationControlled")
     #options.add_argument("--window-size=2600x1280")
-    driver = webdriver.Chrome(options=options)  # Change to webdriver.Chrome
+    driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
     
     # Define your login URL and credentials
     login_url = 'https://heliohost.org/login/'
