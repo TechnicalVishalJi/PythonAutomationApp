@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, request
+from flask import Flask, send_from_directory, request, render_template,render_template_string
 from selenium.webdriver.chrome.options import Options as ChromeOptions  # Import for Chrome options
 from selenium import webdriver
 from selenium.webdriver.common.by import By
