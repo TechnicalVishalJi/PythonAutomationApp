@@ -59,13 +59,11 @@ def add_90_min_mc_server():
 
 
 
-def start_chrome_driver(optionsList):
+def start_chrome_driver(removeOptionsList):
     options = ChromeOptions()  # Change to ChromeOptions
-    options.add_argument("--headless")
-    options.add_argument("--disable-dev-shm-usage")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
-    
+    if "headless" not in removeOptionsList:
+        options.add_argument("--headless")
+
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
@@ -78,6 +76,9 @@ def start_chrome_driver(optionsList):
     options.add_argument("--disable-popup-blocking")
     options.add_argument("--disable-background-timer-throttling")
     options.add_argument("--disable-renderer-backgrounding")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    service = Service(ChromeDriverManager().install())
+    return webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
     
 
 def backup_minecraft_server():
