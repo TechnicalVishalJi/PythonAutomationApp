@@ -80,6 +80,12 @@ def backup_mc_server():
 def share_nc_creation():
     return "Nothing"
 
+@app.route('/cron')
+def cron():
+    return render_template_string("<h1>Cron Done</h1>")
+    
+
+
 
 
 def start_chrome_driver(headless=True, blockImages=False, enableBlocking=False):
