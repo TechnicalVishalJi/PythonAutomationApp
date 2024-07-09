@@ -61,8 +61,11 @@ def add_90_min_mc_server():
 
 def start_chrome_driver(headless=True):
     options = ChromeOptions()  # Change to ChromeOptions
+    vdisplay = None
     if headless:
         options.add_argument("--headless")
+        vdisplay = Xvfb(width=1080, height=540)
+        vdisplay.start()
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
@@ -77,8 +80,11 @@ def start_chrome_driver(headless=True):
     options.add_argument("--disable-renderer-backgrounding")
     options.add_argument("--disable-blink-features=AutomationControlled")
     service = Service(ChromeDriverManager().install())
-    return webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
-    
+    driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
+    if headless:
+        return driver
+    else:
+        return (driver, vdisplay)
 
 def backup_minecraft_server():
     pass
@@ -132,7 +138,7 @@ def add_90_min_minecraft_server():
 
 def login_nightcafe():
     # Setup WebDriver
-    driver = start_chrome_driver(headless=False)
+    driver, vdisplay = start_chrome_driver(headless=False)
     
     # Define your login URL and credentials
     nc_url = "https://creator.nightcafe.studio/studio?view=password-login"
@@ -212,6 +218,7 @@ def login_nightcafe():
     finally:
         # Close the browser
         driver.quit()
+        vdisplay.stop()
 
 def start_minecraft_server():
     # Setup WebDriver
