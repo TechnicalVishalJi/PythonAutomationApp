@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from xvfbwrapper import Xvfb
+import requests
 import time
 import os
 import traceback
@@ -403,7 +404,6 @@ def login_to_heliohost():
 
 # Function to send error to WordPress server
 def send_error_email(subject, error_message):
-    import requests
     import urllib.parse
     email_url = urllib.parse.quote(wordpress_url+f"/Apps/automation-app/email-error.php?subject={subject}&error_message=") + urllib.parse.quote(error_message.replace("#", "**hash**"))
     reponse = requests.get(pagespeed_url + "?url=" + email_url)
