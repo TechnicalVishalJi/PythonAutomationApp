@@ -59,11 +59,10 @@ def add_90_min_mc_server():
 
 
 
-def start_chrome_driver(removeOptionsList):
+def start_chrome_driver(headless=True):
     options = ChromeOptions()  # Change to ChromeOptions
-    if "headless" not in removeOptionsList:
+    if headless:
         options.add_argument("--headless")
-
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
@@ -89,15 +88,8 @@ def share_nightcafe_creation():
 
 def add_90_min_minecraft_server():
     # Setup WebDriver
-    options = ChromeOptions()  # Change to ChromeOptions
-    options.add_argument("--headless")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
-
+    driver = start_chrome_driver()
+    
     # Define your server URL and login details
     server_login_url = 'https://panel.gaming4free.net/auth/login'
     server_url = 'https://panel.gaming4free.net/server/fb97ea2c/console'
@@ -140,15 +132,8 @@ def add_90_min_minecraft_server():
 
 def login_nightcafe():
     # Setup WebDriver
-    options = ChromeOptions()  # Change to ChromeOptions
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    #options.add_argument("--window-size=2600x1280")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
-
+    driver = start_chrome_driver(headless=False)
+    
     # Define your login URL and credentials
     nc_url = "https://creator.nightcafe.studio/studio?view=password-login"
     email = os.environ['nc_email']
@@ -230,15 +215,8 @@ def login_nightcafe():
 
 def start_minecraft_server():
     # Setup WebDriver
-    options = ChromeOptions()  # Change to ChromeOptions
-    options.add_argument("--headless")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
-
+    driver = start_chrome_driver()
+    
     # Define your server URL and login details
     server_login_url = 'https://panel.gaming4free.net/auth/login'
     server_url = 'https://panel.gaming4free.net/server/fb97ea2c/console'
@@ -317,15 +295,7 @@ def start_minecraft_server():
 
 def login_to_heliohost():
     # Setup WebDriver
-    options = ChromeOptions()  # Change to ChromeOptions
-    options.add_argument("--headless")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    #options.add_argument("--window-size=2600x1280")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
+    driver = start_chrome_driver()
     
     # Define your login URL and credentials
     login_url = 'https://heliohost.org/login/'
