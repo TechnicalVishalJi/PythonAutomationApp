@@ -407,3 +407,116 @@ def send_error_email(subject, error_message):
     email_url = urllib.parse.quote(wordpress_url+f"/Apps/automation-app/email-error.php?subject={subject}&error_message=") + urllib.parse.quote(error_message.replace("#", "**hash**"))
     reponse = requests.get(pagespeed_url + "?url=" + email_url)
     return reponse.text
+
+
+
+
+
+########## File Manager code starts ############
+
+
+from flask import jsonify
+import shutil
+
+BASE_DIR = os.path.abspath(".")
+
+@app.route('/vsftp')
+def vsftp():
+    user_logged_in = request.cookies.get('userLoggedIn')
+
+    if user_logged_in == 'YES':
+        return render_template('vsftp.html')
+    else:
+        # User is not logged in
+        return render_template_string('You are not logged in and hence not allowed to access this page')  
+        
+
+@app.route('/vsftp/list', methods=['GET'])
+def list_files():
+    path = request.args.get('path', BASE_DIR)
+    if not os.path.exists(path):
+        return jsonify({"error": "Path does not exist"}), 400
+
+    files = []
+    folders = []
+    for entry in os.scandir(path):
+        if entry.is_file():
+            files.append(entry.name)
+        else:
+            folders.append(entry.name)
+
+    return jsonify({"path": path, "files": files, "folders": folders})
+
+@app.route('/vsftp/create', methods=['POST'])
+def create():
+    data = request.get_json()
+    path = data.get('path')
+    type = data.get('type')
+    name = data.get('name')
+
+    if type == 'file':
+        open(os.path.join(path, name), 'w').close()
+    elif type == 'folder':
+        os.makedirs(os.path.join(path, name), exist_ok=True)
+
+    return jsonify({"status": "success"})
+
+@app.route('/vsftp/delete', methods=['POST'])
+def delete():
+    data = request.get_json()
+    path = data.get('path')
+
+    if os.path.isdir(path):
+        shutil.rmtree(path)
+    else:
+        os.remove(path)
+
+    return jsonify({"status": "success"})
+
+@app.route('/vsftp/move', methods=['POST'])
+def move():
+    data = request.get_json()
+    src = data.get('src')
+    dst = data.get('dst')
+
+    shutil.move(src, dst)
+
+    return jsonify({"status": "success"})
+
+@app.route('/vsftp/copy', methods=['POST'])
+def copy():
+    data = request.get_json()
+    src = data.get('src')
+    dst = data.get('dst')
+
+    if os.path.isdir(src):
+        shutil.copytree(src, os.path.join(dst, os.path.basename(src)))
+    else:
+        shutil.copy2(src, os.path.join(dst, os.path.basename(src)))
+
+    return jsonify({"status": "success"})
+
+@app.route('/vsftp/edit', methods=['GET', 'POST'])
+def edit():
+    if request.method == 'GET':
+        path = request.args.get('path')
+
+        with open(path, 'r') as file:
+            content = file.read()
+        return jsonify({"content": content})
+
+    elif request.method == 'POST':
+        data = request.get_json()
+        path = data.get('path')
+        content = data.get('content')
+
+        with open(path, 'w') as file:
+            file.write(content)
+
+        return jsonify({"status": "success"})
+    else:
+        return "invalid request"
+
+
+
+########### File Manager code ends here ###########
