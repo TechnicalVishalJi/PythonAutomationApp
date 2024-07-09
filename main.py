@@ -82,7 +82,7 @@ def share_nc_creation():
 
 @app.route('/cron')
 def cron():
-    return render_template_string("<h1>Cron Done</h1>")
+    return ("<h1>Cron Done</h1>")
     
 
 
