@@ -82,7 +82,7 @@ def share_nc_creation():
 
 
 
-def start_chrome_driver(headless=True, blockImages=False):
+def start_chrome_driver(headless=True, blockImages=False, enableBlocking=False):
     options = ChromeOptions()  # Change to ChromeOptions
     vdisplay = None
     if headless:
@@ -93,6 +93,12 @@ def start_chrome_driver(headless=True, blockImages=False):
     if blockImages:
         options.add_experimental_option("prefs", {
             "profile.managed_default_content_settings.images": 2  # 2: Block all images
+        })
+    if enableBlocking:
+        options.add_experimental_option("prefs", {
+            "profile.managed_default_content_settings.plugins": 2,      # Disable plugins
+            "profile.default_content_setting_values.popups": 2,         # Block pop-ups
+            "profile.default_content_setting_values.geolocation": 2     # Block geolocation requests
         })
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
@@ -166,7 +172,7 @@ def add_90_min_minecraft_server():
 
 def login_nightcafe():
     # Setup WebDriver
-    driver, vdisplay = start_chrome_driver(headless=False, blockImages=True)
+    driver, vdisplay = start_chrome_driver(headless=False, blockImages=True, enableBlocking=True)
     
     # Define your login URL and credentials
     nc_url = "https://creator.nightcafe.studio/studio?view=password-login"
