@@ -65,6 +65,7 @@ def start_chrome_driver(headless=True):
     vdisplay = None
     if headless:
         options.add_argument("--headless")
+    else:
         vdisplay = Xvfb(width=1080, height=540)
         vdisplay.start()
     options.add_argument("--no-sandbox")
