@@ -27,8 +27,13 @@ def start_server():
     if "Server started successfully" in result or "Server is already running" in result:
         return result, 200  # HTTP 200 OK
     else:
-        return result, 500  # HTTP 500 Internal Server Error
-
+        print(result)
+        result = start_minecraft_server()
+        if "Server started successfully" in result or "Server is already running" in result:
+            return result, 200  # HTTP 200 OK
+        else:
+            return result, 500
+        
 @app.route('/login-heliohost')
 def login_heliohost():
     result = login_to_heliohost()
@@ -47,7 +52,12 @@ def nightcafe_task():
     if "Login and credit claim success" in result:
         return result, 200  # HTTP 200 OK"
     else:
-        return result, 500  # HTTP 500 Internal Server Error
+        print(result)
+        result = login_nightcafe()
+        if "Login and credit claim success" in result:
+            return result, 200  # HTTP 200 OK"
+        else:
+            return result, 500  # HTTP 500 Internal Server Error
 
 @app.route("/add-90-min-mc-server")
 def add_90_min_mc_server():
@@ -55,12 +65,24 @@ def add_90_min_mc_server():
     if "Time extended successfully" in result:
         return result, 200
     else:
-        return result, 500
+        print(result)
+        result = add_90_min_minecraft_server()
+        if "Time extended successfully" in result:
+            return result, 200
+        else:
+            return result, 500
+
+@app.route("/backup-minecraft-server")
+def backup_mc_server():
+    return "Nothing"
+
+@app.route("/share_nightcafe_creation")
+def share_nc_creation():
+    return "Nothing"
 
 
 
-
-def start_chrome_driver(headless=True):
+def start_chrome_driver(headless=True, blockImages=False):
     options = ChromeOptions()  # Change to ChromeOptions
     vdisplay = None
     if headless:
@@ -68,6 +90,10 @@ def start_chrome_driver(headless=True):
     else:
         vdisplay = Xvfb(width=1080, height=540)
         vdisplay.start()
+    if blockImages:
+        options.add_experimental_option("prefs", {
+            "profile.managed_default_content_settings.images": 2  # 2: Block all images
+        })
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
@@ -140,7 +166,7 @@ def add_90_min_minecraft_server():
 
 def login_nightcafe():
     # Setup WebDriver
-    driver, vdisplay = start_chrome_driver(headless=False)
+    driver, vdisplay = start_chrome_driver(headless=False, blockImages=True)
     
     # Define your login URL and credentials
     nc_url = "https://creator.nightcafe.studio/studio?view=password-login"
