@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from selenium.webdriver.chrome.options import Options as ChromeOptions  # Import for Chrome options
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -16,6 +16,7 @@ import traceback
 app = Flask(__name__)
 pagespeed_url = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
 wordpress_url = "https://vishal.rf.gd"
+thisSiteUrl = "https://auto.vishal.rf.gd"
 
 @app.route('/')
 def index():
@@ -167,10 +168,11 @@ def add_90_min_minecraft_server():
         return "Time extended successfully"
         
     except Exception:
-        driver.save_screenshot('Minecraft_server_add_90_error_screenshot.png')
+        screenshotName = "Minecraft_server_add_90_error_screenshot.png"
+        driver.save_screenshot("static/screenshot/"+screenshotName)
         error_message = traceback.format_exc()
         print(error_message)
-        send_error_email("Error while extending time for Minecraft Server", "An error has occured while extending time for <b>gaming4free server</b><br><br>Error:<br>"+error_message.replace("\n", "<br>"))
+        send_error_email("Error while extending time for Minecraft Server", "An error has occured while extending time for <b>gaming4free server</b><br><br>Error:<br>"+error_message.replace("\n", "<br>")) + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>"
         return "<h2>Failed to extend time for the server</h2>"
     finally:
         # Close the browser
@@ -250,10 +252,11 @@ def login_nightcafe():
         
         return "Login and credit claim success"
     except Exception:
-        driver.save_screenshot("nightcafe_error.png")
+        screenshotName = "nightcafe_error.png"
+        driver.save_screenshot("static/screenshot/" + screenshotName)
         error_message = traceback.format_exc()
         print(error_message)
-        send_error_email("Error while logging in to Nightcafe", "An error has occured when logging and claiming credit in <b>Nightcafe</b><br><br>Error:<br>"+error_message.replace("\n", "<br>"))
+        send_error_email("Error while logging in to Nightcafe", "An error has occured when logging and claiming credit in <b>Nightcafe</b><br><br>Error:<br>"+error_message.replace("\n", "<br>")) + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>"
         return "Login or credit claim failed due to some error" + error_message
     finally:
         # Close the browser
@@ -296,15 +299,11 @@ def start_minecraft_server():
             #Now finding start server button
             start_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'PowerControls___StyledButton-sc-5aruet-1')))                           
         except Exception:
-            try:
-                #Finding renew server button
-                renew_server_btn = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'VideoAd___StyledButton-sc-ye3fb7-0')))
-                renew_server_btn.click()
-                wait = WebDriverWait(driver, 120)
-                start_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'PowerControls___StyledButton-sc-5aruet-1'))) 
-            except Exception as r:
-                driver.save_screenshot("error_screenshot.png")  # Save a screenshot for debugging
-                raise r
+            #Finding renew server button
+            renew_server_btn = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'VideoAd___StyledButton-sc-ye3fb7-0')))
+            renew_server_btn.click()
+            wait = WebDriverWait(driver, 120)
+            start_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'PowerControls___StyledButton-sc-5aruet-1')))
 
         #Waiting for start button to get enabled
         time.sleep(10)
@@ -327,10 +326,11 @@ def start_minecraft_server():
             else:
                 raise Exception("Server is not functioning")
     except Exception:
-        driver.save_screenshot('Minecraft_server_error_screenshot.png')
+        screenshotName = "Minecraft_server_error_screenshot.png"
+        driver.save_screenshot('static/screenshot/' + screenshotName)
         error_message = traceback.format_exc()
         print(error_message)
-        send_error_email("Error while starting Minecraft Server", "An error has occured when starting <b>gaming4free server</b><br><br>Error:<br>"+error_message.replace("\n", "<br>"))
+        send_error_email("Error while starting Minecraft Server", "An error has occured when starting <b>gaming4free server</b><br><br>Error:<br>"+error_message.replace("\n", "<br>")) + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>"
         return "<h2>Failed to start the server</h2>"
     finally:
         # Wait for server to start if the start button was clicked
@@ -391,10 +391,11 @@ def login_to_heliohost():
         
         return "Login successful"
     except Exception:
-        driver.save_screenshot("heliohost_error_screenshot.png")
+        screenshotName = "heliohost_error_screenshot.png"
+        driver.save_screenshot("static/screenshot/" + screenshotName)
         error_message = traceback.format_exc()
         print(error_message)
-        send_error_email("Error while logging in to Heliohost", "An error has occured when logging in to <b>Heliohost</b><br><br>Error:<br>"+error_message.replace("\n", "<br>"))
+        send_error_email("Error while logging in to Heliohost", "An error has occured when logging in to <b>Heliohost</b><br><br>Error:<br>"+error_message.replace("\n", "<br>")) + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>"
         return "Login failed due to some error"
     finally:
         # Close the browser
@@ -407,6 +408,10 @@ def send_error_email(subject, error_message):
     email_url = urllib.parse.quote(wordpress_url+f"/Apps/automation-app/email-error.php?subject={subject}&error_message=") + urllib.parse.quote(error_message.replace("#", "**hash**"))
     reponse = requests.get(pagespeed_url + "?url=" + email_url)
     return reponse.text
+
+@app.route('/screenshots/<path:filename>')
+def serve_screenshot(filename):
+    return send_from_directory('static/screenshots', filename)
 
 
 
