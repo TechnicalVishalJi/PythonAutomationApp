@@ -15,7 +15,7 @@ import traceback
 app = Flask(__name__)
 pagespeed_url = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
 wordpress_url = "https://vishal.rf.gd"
-service = Service(ChromeDriverManager().install())
+#service = Service(ChromeDriverManager().install())
 
 @app.route('/')
 def index():
