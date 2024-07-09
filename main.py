@@ -411,7 +411,7 @@ def send_error_email(subject, error_message):
 
 @app.route('/screenshots/<path:filename>')
 def serve_screenshot(filename):
-    return send_from_directory('static/screenshots', filename)
+    return send_from_directory('static/screenshot', filename)
 
 
 
