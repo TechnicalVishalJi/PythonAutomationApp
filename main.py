@@ -15,7 +15,6 @@ import traceback
 app = Flask(__name__)
 pagespeed_url = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
 wordpress_url = "https://vishal.rf.gd"
-#service = Service(ChromeDriverManager().install())
 
 @app.route('/')
 def index():
@@ -73,6 +72,7 @@ def add_90_min_minecraft_server():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-blink-features=AutomationControlled")
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
 
     # Define your server URL and login details
@@ -123,6 +123,7 @@ def login_nightcafe():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-blink-features=AutomationControlled")
     #options.add_argument("--window-size=2600x1280")
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
 
     # Define your login URL and credentials
@@ -212,6 +213,7 @@ def start_minecraft_server():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-blink-features=AutomationControlled")
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
 
     # Define your server URL and login details
@@ -299,6 +301,7 @@ def login_to_heliohost():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-blink-features=AutomationControlled")
     #options.add_argument("--window-size=2600x1280")
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)  # Change to webdriver.Chrome
     
     # Define your login URL and credentials
