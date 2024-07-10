@@ -160,7 +160,14 @@ def add_90_min_minecraft_server():
         extend_time_btn= WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'VideoAd___StyledButton-sc-ye3fb7-0')))
         extend_time_btn.click()
         timeLeft = (driver.find_element(By.CLASS_NAME, "bhhyRR").text).split("in ")[1]
-        timeHour = int((timeLeft).split(" hours ")[0]) if "hours" in timeLeft else int((timeLeft).split(" hour ")[0])
+        timeHour = None
+        if "hours" in timeLeft:
+            timeHour = int((timeLeft).split(" hours")[0])
+        elif "hour" in timeLeft:
+            timeHour = int((timeLeft).split(" hour")[0])
+        elif "minute" in timeLeft:
+            timeHour = 0
+            
         newTimeHour = timeHour
         waitedTime = 0
         while newTimeHour == timeHour:
@@ -168,7 +175,13 @@ def add_90_min_minecraft_server():
             waitedTime += 10
             #driver.save_screenshot("static/screenshot/add_90_" + waitedTime + ".png")
             newTimeLeft = (driver.find_element(By.CLASS_NAME, "bhhyRR").text).split("in ")[1]
-            timeHour = int((newTimeLeft).split(" hours ")[0]) if "hours" in newTimeLeft else int((newTimeLeft).split(" hour ")[0])
+            if "hours" in newTimeLeft:
+                newTimeHour = int((timeLeft).split(" hours")[0])
+            elif "hour" in newTimeLeft:
+                newTimeHour = int((timeLeft).split(" hour")[0])
+            elif "minute" in newTimeLeft:
+                newTimeHour = 0
+                
             if waitedTime >= 120:
                 raise Exception("Something wrong happened, \"Add 90 min\" button was clicked but time didn't extend.")
         return "Time extended successfully"
