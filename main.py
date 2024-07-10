@@ -23,7 +23,7 @@ thisSiteUrl = "https://auto.vishal.rf.gd"
 def index():
     return "<h1>Automation App by Vishal Singh</h1>"
     
-@app.route('/start-minecraft-server', methods=['GET'])
+@app.route('/start-minecraft-server')
 def start_server():
     result = start_minecraft_server()
     if "Server started successfully" in result or "Server is already running" in result:
@@ -35,7 +35,11 @@ def start_server():
             return result, 200  # HTTP 200 OK
         else:
             return result, 500
-        
+
+@app.route('/start-minecraft-server-js')
+def start_server_js():
+    return render_template_string(createJsAjaxPage("/start-minecraft-server"))
+    
 @app.route('/login-heliohost')
 def login_heliohost():
     result = login_to_heliohost()
@@ -48,6 +52,10 @@ def login_heliohost():
         else:
             return result, 500  # HTTP 500 Internal Server Error
 
+@app.route("/login-heliohost-js")
+def login_heliohost_js():
+    return render_template_string(createJsAjaxPage("/login-heliohost"))
+    
 @app.route("/login-nightcafe")
 def nightcafe_task():
     result = login_nightcafe()
@@ -61,6 +69,10 @@ def nightcafe_task():
         else:
             return result, 500  # HTTP 500 Internal Server Error
 
+@app.route("/login-nightcafe-js")
+def login_nightcafe_js():
+    return render_template_string(createJsAjaxPage("/login-nightcafe"))
+    
 @app.route("/add-90-min-mc-server")
 def add_90_min_mc_server():
     result = add_90_min_minecraft_server()
@@ -74,6 +86,10 @@ def add_90_min_mc_server():
         else:
             return result, 500
 
+@app.route("/add-90-min-mc-server-js")
+def add_90_min_mc_server_js():
+    return render_template_string(createJsAjaxPage("/add-90-min-mc-server"))
+    
 @app.route("/backup-minecraft-server")
 def backup_mc_server():
     return "Nothing"
@@ -88,7 +104,34 @@ def cron():
     
 
 
-
+def createJsAjaxPage(url):
+    html = """
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Running..</title>
+        </head>
+        <body>
+            <h1>Running...</h1>
+            <pre id="responseDisplay"></pre>
+        
+            <script>
+                const url = '""" + url + """'; // Replace with your desired URL
+            
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('responseDisplay').textContent = JSON.stringify(data, null, 2);
+                    })
+                    .catch(error => {
+                        document.getElementById('responseDisplay').textContent = `Error: ${error}`;
+                    });
+            </script>
+        </body>
+        </html>
+    """
 
 def start_chrome_driver(headless=True, blockImages=False, enableBlocking=False):
     options = ChromeOptions()  # Change to ChromeOptions
