@@ -121,7 +121,7 @@ def createJsAjaxPage(url):
                 const url = '""" + url + """'; // Replace with your desired URL
             
                 fetch(url)
-                    .then(response => response.json())
+                    .then(response => response.text())
                     .then(data => {
                         document.getElementById('responseDisplay').textContent = data;
                     })
