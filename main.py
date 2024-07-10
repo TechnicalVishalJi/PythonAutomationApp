@@ -191,7 +191,7 @@ def add_90_min_minecraft_server():
         driver.save_screenshot("static/screenshot/"+screenshotName)
         error_message = traceback.format_exc()
         print(error_message)
-        send_error_email("Error while extending time for Minecraft Server", "An error has occured while extending time for <b>gaming4free server</b><br><br>Error:<br>"+error_message.replace("\n", "<br>")) + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>"
+        send_error_email("Error while extending time for Minecraft Server", "An error has occured while extending time for <b>gaming4free server</b><br><br>Error:<br>"+error_message.replace("\n", "<br>") + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>")
         return "<h2>Failed to extend time for the server</h2>"
     finally:
         # Close the browser
@@ -275,7 +275,7 @@ def login_nightcafe():
         driver.save_screenshot("static/screenshot/" + screenshotName)
         error_message = traceback.format_exc()
         print(error_message)
-        send_error_email("Error while logging in to Nightcafe", "An error has occured when logging and claiming credit in <b>Nightcafe</b><br><br>Error:<br>"+error_message.replace("\n", "<br>")) + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>"
+        send_error_email("Error while logging in to Nightcafe", "An error has occured when logging and claiming credit in <b>Nightcafe</b><br><br>Error:<br>"+error_message.replace("\n", "<br>") + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>")
         return "Login or credit claim failed due to some error" + error_message
     finally:
         # Close the browser
@@ -356,7 +356,7 @@ def start_minecraft_server():
         driver.save_screenshot('static/screenshot/' + screenshotName)
         error_message = traceback.format_exc()
         print(error_message)
-        send_error_email("Error while starting Minecraft Server", "An error has occured when starting <b>gaming4free server</b><br><br>Error:<br>"+error_message.replace("\n", "<br>")) + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>"
+        send_error_email("Error while starting Minecraft Server", "An error has occured when starting <b>gaming4free server</b><br><br>Error:<br>"+error_message.replace("\n", "<br>") + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>")
         return "<h2>Failed to start the server</h2>"
     finally:
         # Wait for server to start if the start button was clicked
@@ -421,7 +421,7 @@ def login_to_heliohost():
         driver.save_screenshot("static/screenshot/" + screenshotName)
         error_message = traceback.format_exc()
         print(error_message)
-        send_error_email("Error while logging in to Heliohost", "An error has occured when logging in to <b>Heliohost</b><br><br>Error:<br>"+error_message.replace("\n", "<br>")) + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>"
+        send_error_email("Error while logging in to Heliohost", "An error has occured when logging in to <b>Heliohost</b><br><br>Error:<br>"+error_message.replace("\n", "<br>") + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>")
         return "Login failed due to some error"
     finally:
         # Close the browser
