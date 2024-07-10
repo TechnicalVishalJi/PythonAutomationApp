@@ -141,7 +141,7 @@ def add_90_min_minecraft_server():
     # Define your server URL and login details
     server_login_url = 'https://panel.gaming4free.net/auth/login'
     server_url = 'https://panel.gaming4free.net/server/fb97ea2c/console'
-    cookies = json.loads(os.environ["minecraft_cookies"])
+    cookies = json.loads(os.environ["minecraft_cookies"].replace ("lax", "Lax"))
    
     try:
         # Login to the website
