@@ -157,9 +157,9 @@ def add_90_min_minecraft_server():
         # Navigate to server control panel and start server
         driver.get(server_url)  # Adjust based on actual URL
         
-        extend_time_btn= WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CLASS_NAME, 'VideoAd___StyledButton-sc-ye3fb7-0')))
+        extend_time_btn= WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'VideoAd___StyledButton-sc-ye3fb7-0')))
         extend_time_btn.click()
-        time.sleep(90)
+        time.sleep(120)
         return "Time extended successfully"
         
     except Exception:
