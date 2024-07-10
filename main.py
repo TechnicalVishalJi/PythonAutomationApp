@@ -141,25 +141,19 @@ def add_90_min_minecraft_server():
     # Define your server URL and login details
     server_login_url = 'https://panel.gaming4free.net/auth/login'
     server_url = 'https://panel.gaming4free.net/server/fb97ea2c/console'
-    username = os.environ['mine_email']
-    password = os.environ['mine_pass']
-    
+    cookies = json.loads(os.environ["minecraft_cookies"])
+   
     try:
         # Login to the website
         driver.get(server_login_url)
         time.sleep(2)
 
-        # Enter username
-        username_field = driver.find_element(By.NAME, 'username')  # Adjust based on the actual element name or id
-        username_field.send_keys(username)
-
-        # Enter password
-        password_field = driver.find_element(By.NAME, 'password')  # Adjust based on the actual element name or id
-        password_field.send_keys(password)
-        password_field.send_keys(Keys.RETURN)
-
-        time.sleep(5)  # Adjust based on your internet speed
-
+        # Set each cookie
+        for cookie in cookies:
+            driver.add_cookie(cookie)
+        # Refresh the page to ensure the cookies are applied
+        driver.refresh()
+        
         # Navigate to server control panel and start server
         driver.get(server_url)  # Adjust based on actual URL
         
