@@ -123,7 +123,7 @@ def createJsAjaxPage(url):
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById('responseDisplay').textContent = JSON.stringify(data, null, 2);
+                        document.getElementById('responseDisplay').textContent = data;
                     })
                     .catch(error => {
                         document.getElementById('responseDisplay').textContent = `Error: ${error}`;
