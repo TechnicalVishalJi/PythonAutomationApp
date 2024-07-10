@@ -166,6 +166,7 @@ def add_90_min_minecraft_server():
         while newTimeHour == timeHour:
             time.sleep(10)
             waitedTime += 10
+            driver.save_screenshot("static/screenshot/add_90_" + waitedTime + ".png")
             newTimeLeft = (driver.find_element(By.CLASS_NAME, "bhhyRR").text).split("in ")[1]
             timeHour = int((newTimeLeft).split(" hours ")[0]) if "hours" in newTimeLeft else int((newTimeLeft).split(" hour ")[0])
             if waitedTime >= 120:
