@@ -37,7 +37,7 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the Flask port
-EXPOSE 5000
+EXPOSE 10000
 
 # Start the Flask server using Gunicorn
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "--timeout", "600", "main:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:10000", "--timeout", "600", "main:app"]
