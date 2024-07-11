@@ -22,7 +22,11 @@ thisSiteUrl = "https://auto.vishal.rf.gd"
 @app.route('/')
 def index():
     return "<h1>Automation App by Vishal Singh</h1>"
-    
+
+@app.route('/screenshots/<path:filename>')
+def serve_screenshot(filename):
+    return send_from_directory('static/screenshot', filename)
+
 @app.route('/start-minecraft-server')
 def start_server():
     result = start_minecraft_server()
@@ -232,7 +236,7 @@ def add_90_min_minecraft_server():
     except Exception:
         screenshotName = "Minecraft_server_add_90_error_screenshot.png"
         driver.save_screenshot("static/screenshot/"+screenshotName)
-        error_message = traceback.format_exc()
+        error_message = getCleanError(traceback.format_exc())
         print(error_message)
         send_error_email("Error while extending time for Minecraft Server", "An error has occured while extending time for <b>gaming4free server</b><br><br>Error:<br>"+error_message.replace("\n", "<br>") + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>")
         return "<h2>Failed to extend time for the server</h2>"
@@ -316,7 +320,7 @@ def login_nightcafe():
     except Exception:
         screenshotName = "nightcafe_error.png"
         driver.save_screenshot("static/screenshot/" + screenshotName)
-        error_message = traceback.format_exc()
+        error_message = getCleanError(traceback.format_exc())
         print(error_message)
         send_error_email("Error while logging in to Nightcafe", "An error has occured when logging and claiming credit in <b>Nightcafe</b><br><br>Error:<br>"+error_message.replace("\n", "<br>") + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>")
         return "Login or credit claim failed due to some error"
@@ -397,7 +401,7 @@ def start_minecraft_server():
     except Exception:
         screenshotName = "Minecraft_server_error_screenshot.png"
         driver.save_screenshot('static/screenshot/' + screenshotName)
-        error_message = traceback.format_exc()
+        error_message = getCleanError(traceback.format_exc())
         print(error_message)
         send_error_email("Error while starting Minecraft Server", "An error has occured when starting <b>gaming4free server</b><br><br>Error:<br>"+error_message.replace("\n", "<br>") + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>")
         return "<h2>Failed to start the server</h2>"
@@ -462,7 +466,7 @@ def login_to_heliohost():
     except Exception:
         screenshotName = "heliohost_error_screenshot.png"
         driver.save_screenshot("static/screenshot/" + screenshotName)
-        error_message = traceback.format_exc()
+        error_message = getCleanError(traceback.format_exc())
         print(error_message)
         send_error_email("Error while logging in to Heliohost", "An error has occured when logging in to <b>Heliohost</b><br><br>Error:<br>"+error_message.replace("\n", "<br>") + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>")
         return "Login failed due to some error"
@@ -478,11 +482,17 @@ def send_error_email(subject, error_message):
     reponse = requests.get(pagespeed_url + "?url=" + email_url)
     return reponse.text
 
-@app.route('/screenshots/<path:filename>')
-def serve_screenshot(filename):
-    return send_from_directory('static/screenshot', filename)
-
-
+def getCleanError(error_message):
+    import re
+    message_lines = error_message.split("\n")
+    formattedMessage = ""
+    pattern = r"#\d+ 0x[0-9a-fA-F]{11,13} (<unknown>|start_thread)"
+    regex = re.compile(pattern)
+    for line in message_lines:
+        line = line.strip()
+        if not regex.fullmatch(line) and line != "Stacktrace:":
+            formattedMessage += line + "\n"
+    return formattedMessage
 
 
 
