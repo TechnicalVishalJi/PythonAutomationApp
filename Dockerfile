@@ -36,8 +36,11 @@ COPY . .
 # Install Python dependencies within the virtual environment
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Define environment variable for unbuffered logging
+ENV PYTHONUNBUFFERED=1
+
 # Expose the Flask port
 EXPOSE 10000
 
 # Start the Flask server using Gunicorn
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:10000", "--timeout", "600", "main:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:10000", "--timeout", "600", "--log-level", "info", "--access-logfile", "-", "main:app"]
