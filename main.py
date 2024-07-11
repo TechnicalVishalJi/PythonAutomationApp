@@ -319,7 +319,7 @@ def login_nightcafe():
         error_message = traceback.format_exc()
         print(error_message)
         send_error_email("Error while logging in to Nightcafe", "An error has occured when logging and claiming credit in <b>Nightcafe</b><br><br>Error:<br>"+error_message.replace("\n", "<br>") + "<br><br><center><img src='"+ thisSiteUrl + "/screenshots/" + screenshotName +"' alt='Error Screenshot' style='width:90%'></center>")
-        return "Login or credit claim failed due to some error" + error_message
+        return "Login or credit claim failed due to some error"
     finally:
         # Close the browser
         driver.quit()
