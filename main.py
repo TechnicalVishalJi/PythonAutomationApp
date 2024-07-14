@@ -256,14 +256,14 @@ def login_nightcafe():
     try:
         # Navigate to the login page
         driver.get(nc_url)
-        
+        print("1")
         try:
             #Waiting for Modal Popup
             time.sleep(10)
             WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'css-1slq7s7') and @data-testid='ModalCloseBtn']"))).click()
         except Exception:
             print("No modal appeared to be closed")
-
+        print("2")
         #Waiting for login button
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "css-1t9177x")))
         login_btns = driver.find_elements(By.CLASS_NAME, "css-1t9177x")
@@ -273,7 +273,8 @@ def login_nightcafe():
                 login_btn.click()
                 login_btn_clicked = True
                 break
-                
+
+        print("3")
         if not login_btn_clicked:
             raise Exception("Login button not found")
             
@@ -291,11 +292,12 @@ def login_nightcafe():
         #Clicking on close modal popup button
         driver.find_element(By.XPATH, "//button[contains(@class, 'css-1slq7s7') and @data-testid='ModalCloseBtn']").click()
         time.sleep(1)
+        print("4")
         #filling prompt
         driver.find_element(By.ID, "promptField").send_keys("A beautiful nature scene.")
         #Clicking create button
         driver.find_element(By.CLASS_NAME, "css-17wi8vr").click()
-
+        print("5")
         # Find the inbox button using XPath
         inboxBtn = driver.find_element(By.XPATH, "//button[contains(@class, 'css-gc0ltf') and @data-testid='InboxBtn']")
         inboxBtn.click()
