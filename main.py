@@ -42,7 +42,9 @@ def start_server():
 
 @app.route('/start-minecraft-server-js')
 def start_server_js():
-    return render_template_string(createJsAjaxPage("/start-minecraft-server"))
+    task_thread = threading.Thread(target=start_server)
+    task_thread.start()
+    return render_template_string(createJsAjaxPage())
     
 @app.route('/login-heliohost')
 def login_heliohost():
@@ -58,7 +60,9 @@ def login_heliohost():
 
 @app.route("/login-heliohost-js")
 def login_heliohost_js():
-    return render_template_string(createJsAjaxPage("/login-heliohost"))
+    task_thread = threading.Thread(target=login_heliohost)
+    task_thread.start()
+    return render_template_string(createJsAjaxPage())
     
 @app.route("/login-nightcafe")
 def nightcafe_task():
@@ -75,7 +79,9 @@ def nightcafe_task():
 
 @app.route("/login-nightcafe-js")
 def login_nightcafe_js():
-    return render_template_string(createJsAjaxPage("/login-nightcafe"))
+    task_thread = threading.Thread(target=nightcafe_task)
+    task_thread.start()
+    return render_template_string(createJsAjaxPage())
     
 @app.route("/add-90-min-mc-server")
 def add_90_min_mc_server():
@@ -92,7 +98,9 @@ def add_90_min_mc_server():
 
 @app.route("/add-90-min-mc-server-js")
 def add_90_min_mc_server_js():
-    return render_template_string(createJsAjaxPage("/add-90-min-mc-server"))
+    task_thread = threading.Thread(target=add_90_min_mc_server)
+    task_thread.start()
+    return render_template_string(createJsAjaxPage())
     
 @app.route("/backup-minecraft-server")
 def backup_mc_server():
@@ -108,7 +116,7 @@ def cron():
     
 
 
-def createJsAjaxPage(url):
+def createJsAjaxPage(url="null"):
     return """
         <!DOCTYPE html>
         <html lang="en">
@@ -124,14 +132,14 @@ def createJsAjaxPage(url):
             <script>
                 const url = '""" + url + """'; // Replace with your desired URL
             
-                fetch(url)
+                /*fetch(url)
                     .then(response => response.text())
                     .then(data => {
                         document.getElementById('responseDisplay').textContent = data;
                     })
                     .catch(error => {
                         document.getElementById('responseDisplay').textContent = `Error: ${error}`;
-                    });
+                    });*/
             </script>
         </body>
         </html>
